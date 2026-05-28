@@ -3495,8 +3495,7 @@ function clearBulkRow(n) {
 
 async function loadReviewData() {
   document.getElementById('review-table-wrap').innerHTML = '<div class="loading"><div class="spinner"></div> Loading questions...</div>';
-  const { data, error } = await sb.from('questions').select('*').order('submitted_at', { ascending: false });
-  if (error) {
+const { data, error } = await sb.from('questions').select('id,question_id,task_id,question,submitter_name,submitter_email,status,submitted_at,answered_date,answered_by,issue_field,response_due_at').order('submitted_at', { ascending: false });  if (error) {
     document.getElementById('review-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h3>Error loading data</h3><p>${escHtml(error.message)}</p></div>`;
     return;
   }
@@ -3779,8 +3778,7 @@ async function deleteSelected() {
 
 async function loadFaqData() {
   document.getElementById('faq-list').innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
-  const { data, error } = await sb.from('questions').select('*').eq('status', 'Answered').order('answered_date', { ascending: false });
-  if (error) {
+const { data, error } = await sb.from('questions').select('id,question_id,task_id,question,answer,submitter_name,submitter_email,answered_by,answered_date,issue_field').eq('status', 'Answered').order('answered_date', { ascending: false });  if (error) {
     document.getElementById('faq-list').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h3>Error</h3><p>${escHtml(error.message)}</p></div>`;
     return;
   }
@@ -3840,8 +3838,7 @@ function renderFaq() {
 
 async function loadAllQData() {
   document.getElementById('allq-table-wrap').innerHTML = '<div class="loading"><div class="spinner"></div> Loading questions...</div>';
-  const { data, error } = await sb.from('questions').select('*').order('submitted_at', { ascending: false });
-  if (error) {
+const { data, error } = await sb.from('questions').select('id,question_id,task_id,question,submitter_name,submitter_email,status,submitted_at,answered_date,answered_by,issue_field').order('submitted_at', { ascending: false });  if (error) {
     document.getElementById('allq-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h3>Error</h3><p>${escHtml(error.message)}</p></div>`;
     return;
   }
