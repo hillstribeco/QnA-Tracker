@@ -2156,7 +2156,7 @@ let allowedReviewers = [];
 async function signInWithGoogle() {
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.href }
+    options: { redirectTo: window.location.origin + '/' }
   });
   if (error) toast('Sign in failed: ' + error.message, 'error');
 }
