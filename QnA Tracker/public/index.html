@@ -3495,8 +3495,7 @@ function clearBulkRow(n) {
 
 async function loadReviewData() {
   document.getElementById('review-table-wrap').innerHTML = '<div class="loading"><div class="spinner"></div> Loading questions...</div>';
-const { data, error } = await sb.from('questions').select('id,question_id,task_id,question,submitter_name,submitter_email,status,submitted_at,answered_date,answered_by,issue_field,response_due_at').order('submitted_at', { ascending: false });  if (error) {
-    document.getElementById('review-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h3>Error loading data</h3><p>${escHtml(error.message)}</p></div>`;
+const { data, error } = await sb.from('questions').select('id,question_id,task_id,question,submitter_name,submitter_email,status,submitted_at,answered_date,answered_by,issue_field').order('submitted_at', { ascending: false });    document.getElementById('review-table-wrap').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><h3>Error loading data</h3><p>${escHtml(error.message)}</p></div>`;
     return;
   }
   allQuestions = (data || []).map(normalizeQuestionRecord).filter(q => !isArchived(q));
