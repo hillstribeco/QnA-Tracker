@@ -1970,7 +1970,7 @@ body.dark .attachment-remove-btn { border-color: rgba(255,255,255,.18); }
     <p>Browse all answered questions from the team</p>
     <div class="faq-search-wrap">
       <span class="faq-search-icon">🔍</span>
-      <div class="search-clear-wrap" id="faq-search-wrap" style="flex:1"><input type="text" class="faq-search" id="faq-search" placeholder="Search by Bill ID, staff name, email or keyword..." oninput="renderFaq();document.getElementById('faq-search-wrap').classList.toggle('has-value',this.value.length>0)"><button type="button" class="search-clear-btn" aria-label="Clear search" onclick="document.getElementById('faq-search').value='';document.getElementById('faq-search-wrap').classList.remove('has-value');renderFaq()">×</button></div>
+      <div class="search-clear-wrap" id="faq-search-wrap" style="flex:1"><input type="text" class="faq-search" id="faq-search" placeholder="Search by Bill ID, staff name, email or keyword..." oninput="handleFaqSearchInput()"><button type="button" class="search-clear-btn" id="faq-search-clear" aria-label="Clear answered questions search" onclick="clearFaqSearch()">×</button></div>
     </div>
   </div>
   <div class="faq-body">
@@ -2115,13 +2115,13 @@ body.dark .attachment-remove-btn { border-color: rgba(255,255,255,.18); }
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<script src="/config.js"></script>
+<script src="config.js"></script>
 <script>
 // ══════════════════════════════════════
 // CONFIG — loaded from config.js
 // ══════════════════════════════════════
 if (!window.APP_CONFIG) {
-  throw new Error('Missing config.js: window.APP_CONFIG is not loaded. Confirm public/config.js is deployed at /config.js.');
+  throw new Error('Missing config.js: window.APP_CONFIG is not loaded. Confirm config.js is in the same folder as index.html when using Live Server, and deployed at /config.js on Netlify.');
 }
 const SUPABASE_URL    = window.APP_CONFIG.SUPABASE_URL;
 const SUPABASE_KEY    = window.APP_CONFIG.SUPABASE_ANON_KEY;
@@ -2471,6 +2471,36 @@ function clearSelection() {
 }
 
 // ══════════════════════════════════════
+// ANSWERED SEARCH CLEAR BUTTON
+// Keeps the clear (×) button visible whenever the answered search field has a value,
+// whether the value was typed by the user or inserted by code after navigation.
+// ══════════════════════════════════════
+function updateFaqSearchClearButton() {
+  const input = document.getElementById('faq-search');
+  const wrap = document.getElementById('faq-search-wrap');
+
+  if (!input || !wrap) return;
+
+  wrap.classList.toggle('has-value', input.value.trim().length > 0);
+}
+
+function handleFaqSearchInput() {
+  updateFaqSearchClearButton();
+  renderFaq();
+}
+
+function clearFaqSearch() {
+  const input = document.getElementById('faq-search');
+
+  if (!input) return;
+
+  input.value = '';
+  updateFaqSearchClearButton();
+  renderFaq();
+  input.focus();
+}
+
+// ══════════════════════════════════════
 // ALL QUESTIONS (read-only for all staff)
 // ══════════════════════════════════════
 let allQData = [];
@@ -2480,7 +2510,7 @@ function allQRowClick(taskId, status) {
     showPage('faq');
     setTimeout(() => {
       const search = document.getElementById('faq-search');
-      if (search) { search.value = taskId; renderFaq(); }
+      if (search) { search.value = taskId; updateFaqSearchClearButton(); renderFaq(); }
     }, 400);
   } else {
     toast(`This question (Bill ID: ${taskId}) hasn't been answered yet.`, '');
@@ -5063,6 +5093,7 @@ function applyPendingAnsweredJump() {
   if (!card && search && token && !jump.searched) {
     jump.searched = true;
     search.value = token;
+    updateFaqSearchClearButton();
     const originalJump = P3.pendingAnsweredJump;
     const saved = P3.pendingAnsweredJump;
     P3.pendingAnsweredJump = null;
@@ -6734,7 +6765,7 @@ function openAnsweredByRef(ref) {
   const value = String(ref || '').trim().toLowerCase();
   if (!value) return;
   const search = document.getElementById('faq-search');
-  if (search) { search.value = value; renderFaq(); }
+  if (search) { search.value = value; updateFaqSearchClearButton(); renderFaq(); }
   setTimeout(() => {
     const cards = [...document.querySelectorAll('.faq-card')];
     const card = cards.find(c => (c.textContent || '').toLowerCase().includes(value));
@@ -9082,6 +9113,9 @@ window.addEventListener('DOMContentLoaded', () => {
     updateIssueFieldControls();
   }
 });
+// Keep the FAQ clear button state correct if the input is already populated on page load.
+document.addEventListener('DOMContentLoaded', updateFaqSearchClearButton);
+
 </script>
 
 <!-- ════════════════════════════════════════════════════════════════════════
