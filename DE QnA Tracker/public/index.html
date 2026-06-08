@@ -2682,99 +2682,112 @@ body.dark #page-admin #admin-tabbar.admin-tabbar {
     so it safely overrides older wide/full-screen rules without changing colors.
   */
   :root {
-    --app-content-width: 1080px;
-    --app-readable-width: 780px;
-    --app-wide-width: 1080px;
-    --app-page-gutter: clamp(16px, 4vw, 40px);
-  }
+  /* Wider, modern dashboard widths */
+  --app-content-width: 1320px;
+  --app-readable-width: 1320px;
+  --app-wide-width: 1680px;
 
-  html {
-    font-size: 18px;
-  }
+  /* Reduced gutter for more usable screen space */
+  --app-page-gutter: clamp(12px, 2vw, 24px);
+}
 
-  body {
-    font-size: 1rem;
-    line-height: 1.62;
-    overflow-x: hidden;
-  }
+html {
+  font-size: 18px;
+}
 
-  /* Main centered layout containers */
-  .content,
-  .faq-body,
-  .admin-wrap {
-    width: min(100% - (var(--app-page-gutter) * 2), var(--app-readable-width)) !important;
-    max-width: var(--app-readable-width) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding: 28px 0 !important;
-    box-sizing: border-box;
-  }
+body {
+  font-size: 1rem;
+  line-height: 1.62;
+  overflow-x: hidden;
+}
 
-  .content-wide,
-  .admin-dashboard,
-  .collab-shell {
-    width: min(100% - (var(--app-page-gutter) * 2), var(--app-wide-width)) !important;
-    max-width: var(--app-wide-width) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
-  }
+/* Main centered layout containers */
+.content,
+.faq-body,
+.admin-wrap {
+  width: min(100% - (var(--app-page-gutter) * 2), var(--app-readable-width)) !important;
+  max-width: var(--app-readable-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 32px 0 !important;
+  box-sizing: border-box;
+}
 
-  .content-wide {
-    padding-top: 28px !important;
-    padding-bottom: 28px !important;
-  }
+/* Wide dashboard areas (admin panels, analytics, etc.) */
+.content-wide,
+.admin-dashboard,
+.collab-shell {
+  width: min(100% - (var(--app-page-gutter) * 2), var(--app-wide-width)) !important;
+  max-width: var(--app-wide-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+}
 
-  /* Keep hero/header content aligned to the same centered dashboard width */
-  .hero-premium-inner,
-  .collab-hero-inner,
-  #page-allq .allq-hero > div {
-    width: min(100% - (var(--app-page-gutter) * 2), var(--app-wide-width)) !important;
-    max-width: var(--app-wide-width) !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    box-sizing: border-box;
-  }
+.content-wide {
+  padding-top: 32px !important;
+  padding-bottom: 32px !important;
+}
 
-  /* Make large surfaces feel dashboard-sized instead of oversized/full-width */
-  .card,
-  .admin-card,
-  .analytics-card,
-  .stat-card,
-  .table-wrap,
-  #allq-table-wrap,
-  #review-table-wrap,
-  .success-state {
-    max-width: 100%;
-  }
+/* Keep hero/header aligned with dashboard width */
+.hero-premium-inner,
+.collab-hero-inner,
+#page-allq .allq-hero > div {
+  width: min(100% - (var(--app-page-gutter) * 2), var(--app-wide-width)) !important;
+  max-width: var(--app-wide-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+}
 
-  .card,
-  .admin-card,
-  .analytics-card {
-    padding: 24px !important;
-  }
+/* Cards feel more “dashboard spaced” */
+.card,
+.admin-card,
+.analytics-card,
+.stat-card,
+.table-wrap,
+#allq-table-wrap,
+#review-table-wrap,
+.success-state {
+  max-width: 100%;
+}
 
-  .page-header {
-    margin-bottom: 22px !important;
-  }
+/* Slightly more breathing room inside cards */
+.card,
+.admin-card,
+.analytics-card {
+  padding: 28px !important;
+}
 
-  .page-header h1,
-  .allq-hero h1,
-  .hero-premium h1 {
-    font-size: clamp(1.65rem, 2vw, 2rem) !important;
-    line-height: 1.15;
-  }
+/* Page headers feel more premium and spaced */
+.page-header {
+  margin-bottom: 28px !important;
+}
 
-  .page-header p,
-  .allq-hero p,
-  .hero-premium p {
-    font-size: 1rem !important;
-  }
+.page-header h1,
+.allq-hero h1,
+.hero-premium h1 {
+  font-size: clamp(1.8rem, 2.2vw, 2.2rem) !important;
+  line-height: 1.15;
+}
 
+.page-header p,
+.allq-hero p,
+.hero-premium p {
+  font-size: 1.05rem !important;
+}
+
+/* Optional: better dashboard readability on ultra-wide screens */
+@media (min-width: 1920px) {
+  :root {
+    --app-readable-width: 1400px;
+    --app-wide-width: 1800px;
+  }
+}
   /* Global one-step text increase for controls and dense dashboard areas */
   .nav-btn,
   .nav-name,
